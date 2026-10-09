@@ -84,6 +84,59 @@
   }
 }
 
+.invoice-switcher__button--danger {
+  color: $color-red;
+
+  &:hover,
+  &:focus {
+    background: #fff4f4;
+    border-color: $color-red;
+  }
+}
+
+.invoice-switcher__button--danger-fill {
+  background: $color-red;
+  border-color: $color-red;
+  color: $color-white;
+
+  &:hover,
+  &:focus {
+    background: #d52d2d;
+    border-color: #d52d2d;
+  }
+}
+
+.invoice-delete-confirmation {
+  align-items: center;
+  background: #fff8f8;
+  border: 1px solid #f3b7b7;
+  border-radius: 4px;
+  color: $color-dark;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin: -8px 0 18px;
+  padding: 12px;
+}
+
+.invoice-delete-confirmation__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.invoice-delete-confirmation__body {
+  color: $color-dark-2;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.invoice-delete-confirmation__actions {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
 .input,
 .span,
 .select {

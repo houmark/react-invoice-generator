@@ -130,6 +130,7 @@ const saveInvoiceStore = (store: InvoiceStore) => {
 
 function App() {
   const [invoiceStore, setInvoiceStore] = useState<InvoiceStore>(readInvoiceStore)
+  const [invoiceToDelete, setInvoiceToDelete] = useState<SavedInvoice | null>(null)
 
   const activeInvoice = useMemo(
     () => invoiceStore.invoices.find((invoice) => invoice.id === invoiceStore.activeId),
@@ -207,6 +208,36 @@ function App() {
     })
   }
 
+  const handleDeleteInvoice = () => {
+    if (!activeInvoice || invoiceStore.invoices.length <= 1) {
+      return
+    }
+
+    setInvoiceToDelete(activeInvoice)
+  }
+
+  const handleCancelDeleteInvoice = () => {
+    setInvoiceToDelete(null)
+  }
+
+  const handleConfirmDeleteInvoice = () => {
+    if (!invoiceToDelete) {
+      return
+    }
+
+    setInvoiceStore((store) => {
+      const invoices = store.invoices.filter((invoice) => invoice.id !== invoiceToDelete.id)
+      const updatedStore = {
+        activeId: invoices[0].id,
+        invoices,
+      }
+
+      saveInvoiceStore(updatedStore)
+      return updatedStore
+    })
+    setInvoiceToDelete(null)
+  }
+
   return (
     <div className="app">
       <h1 className="center fs-30">React Invoice Generator</h1>
@@ -237,9 +268,45 @@ function App() {
             <button type="button" className="invoice-switcher__button" onClick={handleCreateInvoice}>
               Duplicate
             </button>
+            <button
+              type="button"
+              className="invoice-switcher__button invoice-switcher__button--danger"
+              onClick={handleDeleteInvoice}
+              disabled={invoiceStore.invoices.length <= 1}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
+      {invoiceToDelete && (
+        <div className="invoice-delete-confirmation">
+          <div>
+            <div className="invoice-delete-confirmation__title">
+              Delete "{invoiceToDelete.name}"?
+            </div>
+            <div className="invoice-delete-confirmation__body">
+              This removes only this saved invoice. The active invoice will switch to another saved invoice.
+            </div>
+          </div>
+          <div className="invoice-delete-confirmation__actions">
+            <button
+              type="button"
+              className="invoice-switcher__button"
+              onClick={handleCancelDeleteInvoice}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="invoice-switcher__button invoice-switcher__button--danger-fill"
+              onClick={handleConfirmDeleteInvoice}
+            >
+              Delete invoice
+            </button>
+          </div>
+        </div>
+      )}
       <InvoicePage
         key={invoiceStore.activeId}
         data={activeInvoice ? activeInvoice.data : initialInvoice}
