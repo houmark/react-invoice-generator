@@ -3,6 +3,39 @@
   width: 700px;
 }
 
+.invoice-switcher {
+  margin: 0 0 18px;
+}
+
+.invoice-switcher__label {
+  color: $color-dark;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.invoice-switcher__controls {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.invoice-switcher__select {
+  background: $color-white;
+  border: 1px solid #cfd8dc;
+  border-radius: 4px;
+  color: $color-dark;
+  flex: 1;
+  font-size: 14px;
+  min-width: 0;
+  padding: 8px 10px;
+
+  &:focus {
+    border-color: $color-cyan;
+    outline: none;
+  }
+}
+
 .input,
 .span,
 .select {
