@@ -137,6 +137,7 @@ const EditableFileImage: FC<Props> = ({
                 marks={marks}
                 included={false}
                 step={1}
+                /* @ts-ignore */
                 onChange={handleChangeWidth}
                 defaultValue={width || 100}
               />

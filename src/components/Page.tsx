@@ -1,10 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Page as PdfPage } from "@react-pdf/renderer";
 import compose from "../styles/compose";
 
 interface Props {
   className?: string;
   pdfMode?: boolean;
+  children?: ReactNode;
 }
 
 const Page: FC<Props> = ({ className, pdfMode, children }) => {
