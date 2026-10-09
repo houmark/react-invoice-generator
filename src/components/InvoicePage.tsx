@@ -530,7 +530,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
         </View>
         <View className="mt-20" pdfMode={pdfMode}>
           <EditableInput
-            className="bold w-100"
+            className="bolder w-100"
             value={invoice.notesLabel}
             onChange={(value) => handleChange("notesLabel", value)}
             pdfMode={pdfMode}
