@@ -9,8 +9,10 @@
   display: inline-block;
   width: 98%;
   padding: 4px 12px 4px 0;
-  margin-bottom: 1px;
+  min-height: 31px;
+  // margin-bottom: 1px;
   border: 1px dotted transparent;
+  box-sizing: border-box;
   transition: background 0.1s ease-in-out, border-color 0.2s ease-in-out;
 }
 
@@ -31,6 +33,11 @@
       color: inherit;
     }
   }
+}
+
+.select {
+  max-height: 31px;
+  // padding: 0;
 }
 
 .invoice-wrapper {
