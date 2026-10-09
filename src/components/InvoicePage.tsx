@@ -338,7 +338,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
             </View>
           </View>
         </View>
-        <View className="mt-30 bg-dark flex" pdfMode={pdfMode}>
+        <View className="mt-30 bg-dark flex rounded" pdfMode={pdfMode}>
           <View className="p-4-8 w-48" pdfMode={pdfMode}>
             <EditableInput
               className="white bold"
@@ -509,7 +509,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 </View>
               ) : null}
             </View>
-            <View className="bg-gray flex p-5" pdfMode={pdfMode}>
+            <View className="bg-gray flex rounded p-5" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <EditableInput
                   className="bold"

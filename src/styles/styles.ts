@@ -125,6 +125,10 @@ const styles: CSSClasses = {
     fontSize: "45px",
   },
 
+  rounded: {
+    borderRadius: "4px",
+  },
+
   page: {
     fontFamily: "Nunito",
     fontSize: "13px",
