@@ -36,8 +36,8 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   const [invoice, setInvoice] = useState<Invoice>(
     data ? { ...data } : { ...initialInvoice }
   );
-  const [subTotal, setSubTotal] = useState<number>();
-  const [saleTax, setSaleTax] = useState<number>();
+  const [subTotal, setSubTotal] = useState<number>(0);
+  const [saleTax, setSaleTax] = useState<number>(0);
 
   const dateFormat = "MMM dd, yyyy";
   const invoiceDate =
@@ -50,6 +50,13 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
   if (invoice.invoiceDueDate === "") {
     invoiceDueDate.setDate(invoiceDueDate.getDate() + 30);
   }
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat(invoice.numberFormatCountry, {
+      style: "currency",
+      currency: invoice.currency,
+    }).format(value);
+  };
 
   const handleChange = (name: keyof Invoice, value: string | number) => {
     if (name !== "productLines") {
@@ -117,7 +124,10 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
     const rateNumber = parseFloat(rate);
     const amount =
       quantityNumber && rateNumber ? quantityNumber * rateNumber : 0;
-    return amount.toFixed(2);
+    return new Intl.NumberFormat(invoice.numberFormatCountry, {
+      style: "currency",
+      currency: invoice.currency ?? "USD",
+    }).format(amount);
   };
 
   useEffect(() => {
@@ -398,7 +408,11 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               <View className="w-17 p-4-8 pb-10" pdfMode={pdfMode}>
                 <EditableInput
                   className="right dark"
-                  value={productLine.rate}
+                  value={
+                    pdfMode
+                      ? formatCurrency(parseFloat(productLine.rate))
+                      : productLine.rate
+                  }
                   onChange={(value) =>
                     handleProductLineChange(i, "rate", value)
                   }
@@ -431,6 +445,38 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                 Add Line Item
               </button>
             )}
+            {!pdfMode && (
+              <>
+                <br />
+                <span className="bold">Currency:</span>
+                <br />
+                <EditableSelect
+                  options={[
+                    { value: "USD", text: "USD" },
+                    { value: "DKK", text: "DKK" },
+                    { value: "EUR", text: "EUR" },
+                  ]}
+                  value={invoice.currency}
+                  onChange={(value) => handleChange("currency", value)}
+                  pdfMode={pdfMode}
+                />
+                <br />
+                <span className="bold">Formatting:</span>
+                <br />
+                <EditableSelect
+                  options={[
+                    { value: "es-EC", text: "Ecuador" },
+                    { value: "en-US", text: "United States" },
+                    { value: "da-DK", text: "Denmark" },
+                  ]}
+                  value={invoice.numberFormatCountry}
+                  onChange={(value) =>
+                    handleChange("numberFormatCountry", value)
+                  }
+                  pdfMode={pdfMode}
+                />
+              </>
+            )}
           </View>
           <View className="w-50 mt-20" pdfMode={pdfMode}>
             <View className="flex" pdfMode={pdfMode}>
@@ -443,7 +489,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               </View>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <Text className="right bold dark" pdfMode={pdfMode}>
-                  {subTotal?.toFixed(2)}
+                  {formatCurrency(subTotal)}
                 </Text>
               </View>
             </View>
@@ -457,7 +503,7 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               </View>
               <View className="w-50 p-5" pdfMode={pdfMode}>
                 <Text className="right bold dark" pdfMode={pdfMode}>
-                  {saleTax?.toFixed(2)}
+                  {formatCurrency(saleTax)}
                 </Text>
               </View>
             </View>
@@ -470,17 +516,11 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-50 p-5 flex" pdfMode={pdfMode}>
-                <EditableInput
-                  className="dark bold right ml-30"
-                  value={invoice.currency}
-                  onChange={(value) => handleChange("currency", value)}
-                  pdfMode={pdfMode}
-                />
-                <Text className="right bold dark w-auto" pdfMode={pdfMode}>
-                  {(typeof subTotal !== "undefined" && typeof saleTax !== "undefined"
-                    ? subTotal + saleTax
-                    : 0).toFixed(2)}
+              <View className="w-50 flex p-5" pdfMode={pdfMode}>
+                <Text className="right bold w-100 dark" pdfMode={pdfMode}>
+                  {subTotal > 0 || saleTax > 0
+                    ? formatCurrency(subTotal + saleTax)
+                    : 0}
                 </Text>
               </View>
             </View>

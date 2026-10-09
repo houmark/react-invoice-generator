@@ -43,6 +43,7 @@ export interface Invoice {
 
   totalLabel: string;
   currency: string;
+  numberFormatCountry: string;
 
   notesLabel: string;
   notes: string;
