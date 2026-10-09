@@ -20,6 +20,11 @@
   gap: 10px;
 }
 
+.invoice-switcher__actions {
+  display: flex;
+  gap: 6px;
+}
+
 .invoice-switcher__select {
   background: $color-white;
   border: 1px solid #cfd8dc;
@@ -33,6 +38,37 @@
   &:focus {
     border-color: $color-cyan;
     outline: none;
+  }
+}
+
+.invoice-switcher__button {
+  background: $color-white;
+  border: 1px solid #cfd8dc;
+  border-radius: 4px;
+  color: $color-dark;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 12px;
+  transition: background 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+
+  &:hover,
+  &:focus {
+    background: $color-yellow;
+    border-color: $color-cyan;
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+
+    &:hover,
+    &:focus {
+      background: $color-white;
+      border-color: #cfd8dc;
+    }
   }
 }
 

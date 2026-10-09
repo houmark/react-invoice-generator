@@ -147,6 +147,26 @@ function App() {
     })
   }
 
+  const handleCreateInvoice = () => {
+    setInvoiceStore((store) => {
+      const sourceInvoice = store.invoices.find((invoice) => invoice.id === store.activeId)
+      const data = cloneInvoice(sourceInvoice ? sourceInvoice.data : initialInvoice)
+      const newInvoice = {
+        id: createInvoiceId(),
+        name: `${getInvoiceName(data)} copy`,
+        data,
+        updatedAt: new Date().toISOString(),
+      }
+      const updatedStore = {
+        activeId: newInvoice.id,
+        invoices: [...store.invoices, newInvoice],
+      }
+
+      saveInvoiceStore(updatedStore)
+      return updatedStore
+    })
+  }
+
   return (
     <div className="app">
       <h1 className="center fs-30">React Invoice Generator</h1>
@@ -166,6 +186,11 @@ function App() {
               </option>
             ))}
           </select>
+          <div className="invoice-switcher__actions">
+            <button type="button" className="invoice-switcher__button" onClick={handleCreateInvoice}>
+              Duplicate
+            </button>
+          </div>
         </div>
       </div>
       <InvoicePage
