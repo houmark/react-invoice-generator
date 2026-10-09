@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import InvoicePage from './components/InvoicePage'
 import { Invoice } from './data/types'
-import { initialInvoice } from './data/initialData'
+import { initialInvoice, initialProductLine } from './data/initialData'
 
 const ACTIVE_INVOICE_KEY = 'invoiceData'
 const ARCHIVED_INVOICES_KEY = 'invoiceDataArchive'
@@ -22,6 +22,27 @@ interface InvoiceStore {
 const createInvoiceId = () => `invoice-${Date.now()}-${Math.random().toString(36).slice(2)}`
 
 const cloneInvoice = (invoice: Invoice) => JSON.parse(JSON.stringify(invoice)) as Invoice
+
+const createBlankInvoice = (): Invoice => ({
+  ...cloneInvoice(initialInvoice),
+  logo: '',
+  companyName: '',
+  name: '',
+  companyAddress: '',
+  companyAddress2: '',
+  billTo: 'Bill To:',
+  clientName: '',
+  clientAddress: '',
+  clientAddress2: '',
+  clientAddress3: '',
+  clientVatNumber: '',
+  invoiceTitle: '',
+  invoiceDate: '',
+  invoiceDueDate: '',
+  productLines: [{ ...initialProductLine }],
+  notes: '',
+  term: '',
+})
 
 const getInvoiceName = (invoice: Invoice) => {
   const from = invoice.companyName.trim()
@@ -167,6 +188,25 @@ function App() {
     })
   }
 
+  const handleCreateBlankInvoice = () => {
+    setInvoiceStore((store) => {
+      const data = createBlankInvoice()
+      const newInvoice = {
+        id: createInvoiceId(),
+        name: getInvoiceName(data),
+        data,
+        updatedAt: new Date().toISOString(),
+      }
+      const updatedStore = {
+        activeId: newInvoice.id,
+        invoices: [...store.invoices, newInvoice],
+      }
+
+      saveInvoiceStore(updatedStore)
+      return updatedStore
+    })
+  }
+
   return (
     <div className="app">
       <h1 className="center fs-30">React Invoice Generator</h1>
@@ -187,6 +227,13 @@ function App() {
             ))}
           </select>
           <div className="invoice-switcher__actions">
+            <button
+              type="button"
+              className="invoice-switcher__button invoice-switcher__button--primary"
+              onClick={handleCreateBlankInvoice}
+            >
+              New invoice
+            </button>
             <button type="button" className="invoice-switcher__button" onClick={handleCreateInvoice}>
               Duplicate
             </button>
