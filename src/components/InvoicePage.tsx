@@ -501,11 +501,13 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
                   pdfMode={pdfMode}
                 />
               </View>
-              <View className="w-50 p-5" pdfMode={pdfMode}>
-                <Text className="right bold dark" pdfMode={pdfMode}>
-                  {formatCurrency(saleTax)}
-                </Text>
-              </View>
+              {invoice.taxLabel ? (
+                <View className="w-50 p-5" pdfMode={pdfMode}>
+                  <Text className="right bold dark" pdfMode={pdfMode}>
+                    {formatCurrency(saleTax)}
+                  </Text>
+                </View>
+              ) : null}
             </View>
             <View className="bg-gray flex p-5" pdfMode={pdfMode}>
               <View className="w-50 p-5" pdfMode={pdfMode}>
