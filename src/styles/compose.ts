@@ -7,7 +7,7 @@ const compose = (classes: string): ReactPDF.Styles => {
   const classesArray: string[] = classes.replace(/\s+/g, " ").split(" ");
 
   classesArray.forEach((className) => {
-    if (typeof styles[className] !== undefined) {
+    if (typeof styles[className] !== "undefined") {
       Object.assign(css, styles[className]);
     }
   });
