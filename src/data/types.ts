@@ -20,6 +20,8 @@ export interface Invoice {
   clientName: string;
   clientAddress: string;
   clientAddress2: string;
+  clientAddress3: string;
+  clientVatNumber: string;
   clientCountry: string;
 
   invoiceTitleLabel: string;

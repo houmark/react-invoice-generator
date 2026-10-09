@@ -232,6 +232,22 @@ const InvoicePage: FC<Props> = ({ data, pdfMode, onChange }) => {
               onChange={(value) => handleChange("clientAddress2", value)}
               pdfMode={pdfMode}
             />
+            {!pdfMode || invoice.clientAddress3?.trim() ? (
+              <EditableInput
+                placeholder="Additional Address"
+                value={invoice.clientAddress3 || ""}
+                onChange={(value) => handleChange("clientAddress3", value)}
+                pdfMode={pdfMode}
+              />
+            ) : null}
+            {!pdfMode || invoice.clientVatNumber?.trim() ? (
+              <EditableInput
+                placeholder="VAT Number"
+                value={invoice.clientVatNumber || ""}
+                onChange={(value) => handleChange("clientVatNumber", value)}
+                pdfMode={pdfMode}
+              />
+            ) : null}
             <EditableSelect
               options={countryList}
               value={invoice.clientCountry}
